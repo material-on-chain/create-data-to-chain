@@ -14,6 +14,7 @@ type FlaxFabricPrepreg struct {
 	ElasticModulusInGigaPascal float32 `json:"elastic_modulus_in_giga_pascal"`
 	TensileStrengthInGigaPascal float32 `json:"tensile_strength_in_giga_pascal"`
 	BendingStrengthInGigaPascal float32 `json:"bending_strength_in_giga_pascal"`
+	PreTransaction []string `json:"pre_transaction"`
 }
 
 func NewFlaxFabricPrepreg() *FlaxFabricPrepreg {
@@ -32,6 +33,8 @@ func (f *FlaxFabricPrepreg) SetLocationInBlade (location string) { f.LocationInB
 func (f *FlaxFabricPrepreg) SetElasticModulusInGigaPascal (em float32) { f.ElasticModulusInGigaPascal = em }
 func (f *FlaxFabricPrepreg) SetTensileStrengthInGigaPascal (ts float32) { f.TensileStrengthInGigaPascal = ts }
 func (f *FlaxFabricPrepreg) SetBendingStrengthInGigaPascal (bs float32) { f.BendingStrengthInGigaPascal = bs }
+func (f *FlaxFabricPrepreg) SetPreTransaction(tx ...string) { f.PreTransaction = tx }
+
 
 func (f FlaxFabricPrepreg) ToString () string {
 	bytes, _ := json.Marshal(f)

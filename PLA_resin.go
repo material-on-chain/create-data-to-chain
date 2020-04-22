@@ -12,6 +12,7 @@ type PLAResin struct {
 	ElasticModulusInGigaPascal float32 `json:"elastic_modulus_in_giga_pascal"`
 	TensileStrengthInGigaPascal float32 `json:"tensile_strength_in_giga_pascal"`
 	ElongationPercent float32 `json:"elongation_percent"`
+	PreTransaction []string `json:"pre_transaction"`
 }
 
 func NewPLAResin() *PLAResin {
@@ -28,6 +29,8 @@ func (pr *PLAResin) SetDensityInGramPerCubicCentimeter (density float32) { pr.De
 func (pr *PLAResin) SetElasticModulusInGigaPascal (em float32) { pr.ElasticModulusInGigaPascal = em }
 func (pr *PLAResin) SetTensileStrengthInGigaPascal (ts float32) { pr.TensileStrengthInGigaPascal = ts }
 func (pr *PLAResin) SetElongationPercent (percent float32) { pr.ElongationPercent = percent }
+func (pr *PLAResin) SetPreTransaction(tx ...string) { pr.PreTransaction = tx }
+
 
 func (pr PLAResin) ToString () string {
 	bytes, _ := json.Marshal(pr)

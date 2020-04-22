@@ -13,6 +13,7 @@ type FlaxFiber struct {
 	ElasticModulusInGigaPascal float32 `json:"elastic_modulus_in_giga_pascal"`
 	TensileStrengthInGigaPascal float32 `json:"tensile_strength_in_giga_pascal"`
 	ElongationPercent float32 `json:"elongation_percent"`
+	PreTransaction []string `json:"pre_transaction"`
 }
 
 func NewFlaxFiber () *FlaxFiber {
@@ -29,6 +30,7 @@ func (f *FlaxFiber) SetDensityInGramPerCubicCentimeter (density float32) { f.Den
 func (f *FlaxFiber) SetElasticModulusInGigaPascal (em float32) { f.ElasticModulusInGigaPascal = em }
 func (f *FlaxFiber) SetTensileStrengthInGigaPascal (ts float32) { f.TensileStrengthInGigaPascal = ts }
 func (f *FlaxFiber) SetElongationPercent (percent float32) { f.ElongationPercent = percent }
+func (f *FlaxFiber) SetPreTransaction(tx ...string) { f.PreTransaction = tx }
 
 func (f FlaxFiber) ToString () string {
 	bytes, _ := json.Marshal(f)
