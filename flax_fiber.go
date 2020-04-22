@@ -1,6 +1,11 @@
 package create_data_to_chain
 
-import "encoding/json"
+import (
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	owcrypt "github.com/material-on-chain/go-owcrypt"
+)
 
 // parameters of flax fiber
 type FlaxFiber struct {
@@ -8,12 +13,11 @@ type FlaxFiber struct {
 	Company string `json:"company"`
 	SalesManager string `json:"sales_manager"`
 	ProducingArea string `json:"producing_area"`
-	AverageLengthInMillimeter float32 `json:"average_length_in_millimeter"`
-	DensityInGramPerCubicCentimeter float32 `json:"density_in_gram_per_cubic_centimeter"`
-	ElasticModulusInGigaPascal float32 `json:"elastic_modulus_in_giga_pascal"`
-	TensileStrengthInGigaPascal float32 `json:"tensile_strength_in_giga_pascal"`
+	AverageLengthInMillimeter float32 `json:"average_length"`
+	DensityInGramPerCubicCentimeter float32 `json:"density"`
+	ElasticModulusInGigaPascal float32 `json:"elastic_modulus"`
+	TensileStrengthInGigaPascal float32 `json:"tensile_strength"`
 	ElongationPercent float32 `json:"elongation_percent"`
-	PreTransaction []string `json:"pre_transaction"`
 }
 
 func NewFlaxFiber () *FlaxFiber {
@@ -30,9 +34,22 @@ func (f *FlaxFiber) SetDensityInGramPerCubicCentimeter (density float32) { f.Den
 func (f *FlaxFiber) SetElasticModulusInGigaPascal (em float32) { f.ElasticModulusInGigaPascal = em }
 func (f *FlaxFiber) SetTensileStrengthInGigaPascal (ts float32) { f.TensileStrengthInGigaPascal = ts }
 func (f *FlaxFiber) SetElongationPercent (percent float32) { f.ElongationPercent = percent }
-func (f *FlaxFiber) SetPreTransaction(tx ...string) { f.PreTransaction = tx }
 
 func (f FlaxFiber) ToString () string {
 	bytes, _ := json.Marshal(f)
 	return string(bytes)
+}
+
+func (f FlaxFiber) GetDataToChain() string {
+	fingerPrint := owcrypt.Hash([]byte(f.ToString()),0, owcrypt.HASH_ALG_SHA3_256_RIPEMD160)
+	var (
+		body = make(map[string]interface{}, 0)
+	)
+
+	body["company"] = f.Company
+	body["finger_print"] = hex.EncodeToString(fingerPrint)
+
+	json, _ := json.Marshal(body)
+
+	return string(json)
 }
