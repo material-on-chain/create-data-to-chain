@@ -3,7 +3,6 @@ package create_data_to_chain
 import (
 	"encoding/hex"
 	"encoding/json"
-	"errors"
 	owcrypt "github.com/material-on-chain/go-owcrypt"
 )
 
