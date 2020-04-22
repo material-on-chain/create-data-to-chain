@@ -1,6 +1,10 @@
 package create_data_to_chain
 
-import "encoding/json"
+import (
+	"encoding/hex"
+	"encoding/json"
+	"github.com/material-on-chain/go-owcrypt"
+)
 
 type FlaxFabricPrepreg struct {
 	Product string `json:"product"`
@@ -9,11 +13,11 @@ type FlaxFabricPrepreg struct {
 	Shape string `json:"shape"`
 	ProcessType string `json:"process_type"`
 	LayerConfiguration float32 `json:"layer_configuration"`
-	DensityInGramPerCubicCentimeter float32 `json:"density_in_gram_per_cubic_centimeter"`
+	DensityInGramPerCubicCentimeter float32 `json:"density"`
 	LocationInBlade string `json:"location_in_blade"`
-	ElasticModulusInGigaPascal float32 `json:"elastic_modulus_in_giga_pascal"`
-	TensileStrengthInGigaPascal float32 `json:"tensile_strength_in_giga_pascal"`
-	BendingStrengthInGigaPascal float32 `json:"bending_strength_in_giga_pascal"`
+	ElasticModulusInGigaPascal float32 `json:"elastic_modulus"`
+	TensileStrengthInGigaPascal float32 `json:"tensile_strength"`
+	BendingStrengthInGigaPascal float32 `json:"bending_strength"`
 	PreTransaction []string `json:"pre_transaction"`
 }
 
@@ -39,4 +43,18 @@ func (f *FlaxFabricPrepreg) SetPreTransaction(tx ...string) { f.PreTransaction =
 func (f FlaxFabricPrepreg) ToString () string {
 	bytes, _ := json.Marshal(f)
 	return string(bytes)
+}
+
+func (f FlaxFabricPrepreg) GetDataToChain() string {
+	fingerPrint := owcrypt.Hash([]byte(f.ToString()),0, owcrypt.HASH_ALG_SHA3_256_RIPEMD160)
+	var (
+		body = make(map[string]interface{}, 0)
+	)
+
+	body["company"] = f.Company
+	body["finger_print"] = hex.EncodeToString(fingerPrint)
+
+	json, _ := json.Marshal(body)
+
+	return string(json)
 }
