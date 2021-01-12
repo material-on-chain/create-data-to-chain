@@ -19,7 +19,6 @@ type FlaxFiber struct {
 	ElongationPercent float32 `json:"elongation_percent"`
 }
 
-
 func NewFlaxFiber () *FlaxFiber {
 	return  &FlaxFiber{
 		Product: "flax fiber",
